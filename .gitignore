@@ -1,0 +1,4 @@
+vault-pass.gpg-*
+roles/*
+!roles/requirements.yml
+.vscode/

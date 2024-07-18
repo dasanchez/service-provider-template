@@ -1,0 +1,17 @@
+---
+firewalld_add:
+  - name: public
+    interfaces:
+      - enp9s0
+    services:
+      - http
+      - https
+    ports:
+      - 6443/tcp
+
+  - name: trusted
+    sources:
+      - 10.42.0.0/16
+      - 10.43.0.0/16
+      - 146.190.248.172/32
+      - 142.93.152.34/32

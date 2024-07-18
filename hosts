@@ -1,0 +1,14 @@
+[all]
+dante-cad-daemon ansible_host=142.93.152.34
+dante-cad-cluster-control ansible_host=146.190.248.157
+dante-cad-cluster-worker ansible_host=146.190.248.172
+
+[so]
+dante-cad-daemon
+
+[dante_cad]
+dante-cad-cluster-control k8s_node_type=bootstrap
+dante-cad-cluster-worker k8s_node_type=agent k8s_pod_limit=1024 k8s_external_ip=146.190.248.172
+
+[k8s:children]
+dante_cad

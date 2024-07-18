@@ -1,0 +1,21 @@
+---
+nginx_packages_intall: false
+nginx_server_name_hash: 64
+nginx_proxy_read_timeout: 1200
+nginx_proxy_send_timeout: 1200
+nginx_proxy_connection_timeout: 75
+
+nginx_sites:
+  - name: dante-cad-console
+    url: dante-cad-console.realitynetwork.xyz
+    upstream: http://localhost:8080
+    template: basic-proxy
+    ssl: true
+
+  - name: dante-cad-daemon
+    url: dante-cad-daemon.realitynetwork.xyz
+    upstream: http://localhost:9473
+    configs:
+      - rewrite ^/deployer(/.*)? https://webapp-deployer.pwa.realitynetwork.xyz permanent
+    template: websocket-proxy
+    ssl: true

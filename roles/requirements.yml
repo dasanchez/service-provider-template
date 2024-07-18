@@ -1,0 +1,20 @@
+---
+- name: firewalld
+  scm: git
+  src: https://github.com/srwadleigh/ansible-role-firewalld
+  version: main
+
+- name: nginx
+  scm: git
+  src: https://github.com/srwadleigh/ansible-role-nginx
+  version: main
+
+- name: so
+  scm: git
+  src: https://github.com/srwadleigh/ansible-role-so
+  version: main
+
+- name: k8s
+  scm: git
+  src: https://github.com/srwadleigh/ansible-role-k8s
+  version: main

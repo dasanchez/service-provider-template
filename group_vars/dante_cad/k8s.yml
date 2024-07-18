@@ -1,0 +1,55 @@
+---
+# default context is used for stack orchestrator deployments, for testing a custom context name can be usefull
+#k8s_cluster_name: dante-cad-cluster
+k8s_cluster_name: default
+k8s_cluster_url: dante-cad-cluster-control.realitynetwork.xyz
+k8s_taint_servers: true
+
+k8s_acme_email: "{{ support_email }}"
+
+# k3s bundles traefik as the default ingress controller, we will disable it and use nginx instead
+k8s_disable: 
+  - traefik
+
+# secrets can be stored in a file or as a template, the template secrets gets dynamically base64 encoded while file based secrets must be encoded by hand
+k8s_secrets:
+  - name: digitalocean-dns
+    type: file
+    source: secret-digitalocean-dns.yaml
+
+k8s_manifests:
+  # ingress controller, replaces traefik which is explicitly disabled
+  - name: ingress-nginx
+    type: url
+    source: https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.1/deploy/static/provider/cloud/deploy.yaml
+
+  # cert-manager, required for letsencrypt
+  - name: cert-manager
+    type: url
+    source: https://github.com/cert-manager/cert-manager/releases/download/v1.15.1/cert-manager.yaml
+  
+  # issuer for basic http certs
+  - name: letsencrypt-prod
+    type: template
+    source: shared/clusterissuer-acme.yaml
+    server: https://acme-v02.api.letsencrypt.org/directory
+    solvers: 
+      - type: http
+        ingress: nginx
+
+  # issuer for wildcard dns certs
+  - name: letsencrypt-prod-wild
+    type: template
+    source: shared/clusterissuer-acme.yaml
+    server: https://acme-v02.api.letsencrypt.org/directory
+    solvers: 
+      - type: dns
+        provider: digitalocean
+        tokenref: tokenSecretRef
+        secret_name: digitalocean-dns
+        secret_key: access-token
+
+  # initiate wildcard cert
+  - name: pwa.realitynetwork.xyz
+    type: file
+    source: wildcard-pwa-realitynetwork.yaml

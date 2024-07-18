@@ -1,0 +1,25 @@
+---
+- name: Setup hosts
+  hosts: all
+  become: true
+  roles:
+    - role: firewalld
+    - role: nginx
+
+- name: Setup stack orchestrator
+  hosts: so
+  become: true
+  roles:
+    - role: so  
+  tags:
+    - never
+    - so
+
+- name: Setup k8s clusters
+  hosts: k8s
+  become: true
+  roles:
+    - role: k8s  
+  tags:
+    - never
+    - k8s

@@ -1,0 +1,2 @@
+---
+nginx_ssl_email: "{{ support_email }}"

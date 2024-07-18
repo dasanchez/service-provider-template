@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: pwa.realitynetwork.xyz
+  namespace: default
+spec:
+  secretName: pwa.realitynetwork.xyz
+  issuerRef:
+    name: letsencrypt-prod-wild
+    kind: ClusterIssuer
+    group: cert-manager.io
+  commonName: "*.pwa.realitynetwork.xyz"
+  dnsNames:
+    - "pwa.realitynetwork.xyz"
+    - "*.pwa.realitynetwork.xyz"
